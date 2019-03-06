@@ -70,12 +70,12 @@ void free_num(struct Node *blst){
         ptr2 = ptr;
     }
 }
- */
+*/
 
 struct Node *copy_num(struct Node *nlst){
     struct Node *ptr = NULL;
     struct Node *copy = 0;
-    struct Node *result;
+    struct Node *result = NULL;
     while (nlst) {
         if (copy == 0) {
             copy = cons_bigit(nlst->bigit,0);
@@ -120,9 +120,17 @@ struct Node *add_inc(struct Node *nlst, int inc){
 
 struct Node *add(struct Node *n1lst, struct Node *n2lst){
     int inc = 0;
-    struct Node *ptr = malloc(sizeof(struct Node));
-    struct Node *cur = ptr;
+    struct Node *ptr = 0;
+    struct Node *cur = 0;
     struct Node *prePtr = 0;
+    
+    if (n1lst == 0) {
+        return copy_num(n2lst);
+    }
+    if (n2lst == 0) {
+        return copy_num(n1lst);
+    }
+    
     while(n1lst||n2lst){
         if (n1lst == 0) {
             cur = add_inc(n2lst, inc);
@@ -164,11 +172,11 @@ struct Node *add(struct Node *n1lst, struct Node *n2lst){
 }
 struct Node *mult_unit(struct Node *nlst, int num){
     int inc = 0;
-    if (nlst == 0) {
+    if (nlst == 0 || num == 0) {
         return 0;
     }
-    struct Node *cur;
-    struct Node *result;
+    struct Node *cur = NULL;
+    struct Node *result = NULL;
     struct Node *prePtr = 0;
     while (nlst) {
         if (nlst->bigit * num + inc > 9999) {
@@ -196,8 +204,9 @@ struct Node *mult_unit(struct Node *nlst, int num){
 }
 
 struct Node *mult(struct Node *n1lst, struct Node *n2lst){
-    struct Node *cur;
+    struct Node *cur = 0;
     struct Node *ptr = 0;
+    int a = 1;
     
     if (!(n1lst || n2lst)) {
         return 0;
@@ -208,9 +217,14 @@ struct Node *mult(struct Node *n1lst, struct Node *n2lst){
             ptr = cur;
         }
         else{
-            cur = add(ptr, cons_bigit(0,mult_unit(n1lst, n2lst->bigit)));
+            struct Node *temp = mult_unit(n1lst, n2lst->bigit);
+            for (int i = 0; i < a; i++) {
+                temp = cons_bigit(0,temp);
+            }
+            cur = add(ptr, temp);
 //            free_num(ptr);
             ptr = cur;
+            ++a;
         }
         
         n2lst = n2lst->next;
@@ -221,9 +235,6 @@ struct Node *mult(struct Node *n1lst, struct Node *n2lst){
 }
 
 int main() {
-    print_num(copy_num(cons_bigit(50,cons_bigit(30, cons_bigit(2321, 0)))));
-    //print_num(mult(cons_bigit(50,cons_bigit(30, cons_bigit(2321, 0))), cons_bigit(1000,cons_bigit(20, cons_bigit(1231, 0)))));
-    
-    
+//    print_num(add(0, cons_bigit(56, cons_bigit(1000,cons_bigit(20, cons_bigit(9010, 0))))));
     return 0;
 }
