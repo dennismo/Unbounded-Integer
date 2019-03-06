@@ -144,14 +144,12 @@ struct Node *add(struct Node *n1lst, struct Node *n2lst){
             prePtr->next = cur;
             break;
         }
-        else if((n1lst->bigit + n2lst->bigit + inc ) > 9999){
-            int a = n1lst->bigit;
-            int b = n2lst->bigit;
-            cur = cons_bigit((a + b + inc) % 10000,0);
-            inc = (a + b + inc) / 10000;
+        else if (n1lst->bigit + n2lst->bigit + inc > 9999){
+            cur = cons_bigit((n1lst->bigit + n2lst->bigit + inc) % 10000,0);
+            inc = (n1lst->bigit + n2lst->bigit + inc) / 10000;
         }
         else{
-            cur = cons_bigit(n1lst->bigit + n2lst->bigit + inc,0);
+            cur = cons_bigit(n1lst->bigit + n2lst->bigit + inc, 0);
             inc = 0;
         }
         if (prePtr == 0) {
@@ -205,19 +203,24 @@ struct Node *mult_unit(struct Node *nlst, int num){
 
 struct Node *mult(struct Node *n1lst, struct Node *n2lst){
     struct Node *cur = 0;
-    struct Node *ptr = 0;
+    struct Node *ptr = -1;
     int a = 1;
     
-    if (!(n1lst || n2lst)) {
+    if (!(n1lst && n2lst)) {
         return 0;
     }
     while (n2lst) {
-        if (ptr == 0) {
+        if (ptr == -1) {
             cur = mult_unit(n1lst, n2lst->bigit);
             ptr = cur;
         }
         else{
             struct Node *temp = mult_unit(n1lst, n2lst->bigit);
+            if (temp == 0) {
+                ++a;
+                n2lst = n2lst->next;
+                continue;
+            }
             for (int i = 0; i < a; i++) {
                 temp = cons_bigit(0,temp);
             }
@@ -235,6 +238,10 @@ struct Node *mult(struct Node *n1lst, struct Node *n2lst){
 }
 
 int main() {
-//    print_num(add(0, cons_bigit(56, cons_bigit(1000,cons_bigit(20, cons_bigit(9010, 0))))));
+    print_num(mult(cons_bigit(9999, cons_bigit(9998, cons_bigit(9999, 0))),
+                   0
+                  ));printf("\n");
+    
+    print_num(mult(cons_bigit(56, cons_bigit(1000,cons_bigit(20, cons_bigit(9010, 0)))), cons_bigit(0, cons_bigit(0, cons_bigit(10, 0)))));
     return 0;
 }
