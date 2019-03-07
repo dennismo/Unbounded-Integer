@@ -226,6 +226,7 @@ struct Node *mult(struct Node *n1lst, struct Node *n2lst){
             }
             cur = add(ptr, temp);
 //            free_num(ptr);
+            //            free_num(temp);
             ptr = cur;
             ++a;
         }
@@ -238,10 +239,10 @@ struct Node *mult(struct Node *n1lst, struct Node *n2lst){
 }
 
 int main() {
-    print_num(mult(cons_bigit(9999, cons_bigit(9998, cons_bigit(9999, 0))),
-                   0
+    print_num(mult(
+                   cons_bigit(1, cons_bigit(9998, cons_bigit(1, 0))),
+                   cons_bigit(1, cons_bigit(9998, cons_bigit(1, 0)))
                   ));printf("\n");
-    
     print_num(mult(cons_bigit(56, cons_bigit(1000,cons_bigit(20, cons_bigit(9010, 0)))), cons_bigit(0, cons_bigit(0, cons_bigit(10, 0)))));
     return 0;
 }
